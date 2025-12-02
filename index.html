@@ -53,8 +53,7 @@
     <div id="map"></div>
     <div class="controls">
         <label><input type="checkbox" id="homelessResources" checked> Homeless Resources</label><br>
-        <label><input type="checkbox" id="emergencyFood" checked> Emergency Food Locations</label><br>
-        <label><input type="checkbox" id="censusTract" checked> Census Tract</label>
+        <label><input type="checkbox" id="emergencyFood" checked> Emergency Food Locations</label>
     </div>
     <div class="legend">
         <h4>Homeless Resources Categories</h4>
@@ -183,10 +182,6 @@
 
             document.getElementById('emergencyFood').addEventListener('change', (e) => {
                 map.setLayoutProperty('emergencyFood', 'visibility', e.target.checked ? 'visible' : 'none');
-            });
-
-            document.getElementById('censusTract').addEventListener('change', (e) => {
-                map.setLayoutProperty('censusTract', 'visibility', e.target.checked ? 'visible' : 'none');
             });
 
             // Change cursor to pointer when hovering over features
