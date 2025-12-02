@@ -110,6 +110,64 @@
             document.getElementById('censusTract').addEventListener('change', (e) => {
                 map.setLayoutProperty('censusTract', 'visibility', e.target.checked ? 'visible' : 'none');
             });
+
+            // Change cursor to pointer when hovering over features
+            map.on('mouseenter', 'homelessResources', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'homelessResources', () => {
+                map.getCanvas().style.cursor = '';
+            });
+            map.on('mouseenter', 'emergencyFood', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'emergencyFood', () => {
+                map.getCanvas().style.cursor = '';
+            });
+
+            // Add click event for homeless resources
+            map.on('click', 'homelessResources', (e) => {
+                const properties = e.features[0].properties;
+                
+                // Build popup content
+                let popupContent = `<div style="font-family: Arial, sans-serif;">`;
+                popupContent += `<h3 style="margin: 0 0 10px 0; color: #FF0000;">${properties.site || 'Homeless Resource'}</h3>`;
+                if (properties.address) popupContent += `<p style="margin: 5px 0;"><strong>Address:</strong> ${properties.address}</p>`;
+                if (properties.city) popupContent += `<p style="margin: 5px 0;"><strong>City:</strong> ${properties.city}</p>`;
+                if (properties.category) popupContent += `<p style="margin: 5px 0;"><strong>Category:</strong> ${properties.category}</p>`;
+                if (properties.services) {
+                    const services = JSON.parse(properties.services);
+                    popupContent += `<p style="margin: 5px 0;"><strong>Services:</strong> ${services.join(', ')}</p>`;
+                }
+                popupContent += `</div>`;
+
+                new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+
+            // Add click event for emergency food locations
+            map.on('click', 'emergencyFood', (e) => {
+                const properties = e.features[0].properties;
+                
+                // Build popup content
+                let popupContent = `<div style="font-family: Arial, sans-serif;">`;
+                popupContent += `<h3 style="margin: 0 0 10px 0; color: #00FF00;">${properties.Location || properties.Agency || 'Emergency Food Location'}</h3>`;
+                if (properties.Agency) popupContent += `<p style="margin: 5px 0;"><strong>Agency:</strong> ${properties.Agency}</p>`;
+                if (properties.Address) popupContent += `<p style="margin: 5px 0;"><strong>Address:</strong> ${properties.Address}</p>`;
+                if (properties['Food Resource Type']) popupContent += `<p style="margin: 5px 0;"><strong>Type:</strong> ${properties['Food Resource Type']}</p>`;
+                if (properties['Days/Hours']) popupContent += `<p style="margin: 5px 0;"><strong>Hours:</strong> ${properties['Days/Hours']}</p>`;
+                if (properties['Phone Number']) popupContent += `<p style="margin: 5px 0;"><strong>Phone:</strong> ${properties['Phone Number']}</p>`;
+                if (properties['Who They Serve']) popupContent += `<p style="margin: 5px 0;"><strong>Serves:</strong> ${properties['Who They Serve']}</p>`;
+                if (properties['Operational Notes']) popupContent += `<p style="margin: 5px 0;"><strong>Notes:</strong> ${properties['Operational Notes']}</p>`;
+                popupContent += `</div>`;
+
+                new mapboxgl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
         });
     </script>
 </body>
