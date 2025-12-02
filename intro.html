@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seattle Map - Introduction</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .description {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .description ul {
+            list-style-position: inside;
+            margin: 20px 0;
+        }
+
+        .description li {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .btn-container {
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .feature h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: inline-block;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html" class="nav-link">View Map →</a>
+    </div>
+    <div class="container">
+        <h1>Seattle Health & Resources Map</h1>
+        <h2>Exploring Community Health and Services</h2>
+        
+        <div class="description">
+            <p>Welcome to an interactive mapping application that visualizes critical health and social service data across Seattle. This comprehensive tool helps you explore the relationship between community health challenges and available resources.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🏥</div>
+                    <h3>Health Data</h3>
+                    <p>Visualize homeless health statistics by census tract</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>Food Services</h3>
+                    <p>Locate emergency food and meal programs</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Interactive Layers</h3>
+                    <p>Toggle between different data layers for insights</p>
+                </div>
+            </div>
+
+            <p><strong>What you can do:</strong></p>
+            <ul>
+                <li>View homeless health data aggregated by Seattle census tracts</li>
+                <li>Discover emergency food and meal service locations</li>
+                <li>Toggle between different map layers to analyze patterns</li>
+                <li>Click on map features for detailed information</li>
+                <li>Understand the geographic distribution of resources and needs</li>
+            </ul>
+        </div>
+
+        <div class="btn-container">
+            <a href="index.html" class="btn">Explore the Map →</a>
+        </div>
+    </div>
+</body>
+</html>
