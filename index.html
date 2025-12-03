@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <style>
         body { margin: 0; padding: 0; }
         #map { width: 100%; height: 100vh; }
@@ -150,11 +151,38 @@
             zoom: 12
         });
 
-        map.on('load', () => {
+        // Function to filter points within census tracts
+        function filterPointsWithinBoundary(points, boundary) {
+            const filteredFeatures = points.features.filter(point => {
+                // Check if the point is within any of the census tract polygons
+                return boundary.features.some(tract => {
+                    return turf.booleanPointInPolygon(point, tract);
+                });
+            });
+            
+            return {
+                type: 'FeatureCollection',
+                features: filteredFeatures
+            };
+        }
+
+        map.on('load', async () => {
+            // Load all data first
+            const [censusTractData, homelessData, emergencyFoodData, seattleLimitsData] = await Promise.all([
+                fetch('./assets/2020_Census_Tracts_Seattle.geojson').then(r => r.json()),
+                fetch('./assets/cleaned_homeless_health.geojson').then(r => r.json()),
+                fetch('./assets/EmergencyFoodAndMealSeattleOnly.geojson').then(r => r.json()),
+                fetch('./assets/seattle_city_limits.geojson').then(r => r.json())
+            ]);
+
+            // Filter points to only include those within census tracts
+            const filteredHomelessData = filterPointsWithinBoundary(homelessData, censusTractData);
+            const filteredEmergencyFoodData = filterPointsWithinBoundary(emergencyFoodData, censusTractData);
+
             // Add Seattle city limits layer
             map.addSource('seattleCityLimits', {
                 type: 'geojson',
-                data: './assets/seattle_city_limits.geojson'
+                data: seattleLimitsData
             });
             map.addLayer({
                 id: 'seattleCityLimits',
@@ -166,10 +194,10 @@
                 }
             });
 
-            // Add homeless resources layer
+            // Add homeless resources layer (filtered)
             map.addSource('homelessResources', {
                 type: 'geojson',
-                data: './assets/cleaned_homeless_health.geojson'
+                data: filteredHomelessData
             });
             map.addLayer({
                 id: 'homelessResources',
@@ -195,10 +223,10 @@
                 }
             });
 
-            // Add emergency food locations layer
+            // Add emergency food locations layer (filtered)
             map.addSource('emergencyFood', {
                 type: 'geojson',
-                data: './assets/EmergencyFoodAndMealSeattleOnly.geojson'
+                data: filteredEmergencyFoodData
             });
             map.addLayer({
                 id: 'emergencyFood',
@@ -213,7 +241,7 @@
             // Add census tract layer
             map.addSource('censusTract', {
                 type: 'geojson',
-                data: './assets/2020_Census_Tracts_Seattle.geojson'
+                data: censusTractData
             });
             map.addLayer({
                 id: 'censusTract',
