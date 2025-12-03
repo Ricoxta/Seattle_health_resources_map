@@ -246,6 +246,7 @@
 
             document.getElementById('censusTract').addEventListener('change', (e) => {
                 map.setLayoutProperty('censusTract', 'visibility', e.target.checked ? 'visible' : 'none');
+                map.setLayoutProperty('censusTract-outline', 'visibility', e.target.checked ? 'visible' : 'none');
             });
 
             // Change cursor to pointer when hovering over features
