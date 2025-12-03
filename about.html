@@ -13,17 +13,17 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .navbar {
             background: white;
-            padding: 15px 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 18px 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
@@ -33,39 +33,43 @@
         }
 
         .navbar h2 {
-            color: #333;
-            font-size: 1.5em;
+            color: #1e293b;
+            font-size: 1.4em;
+            font-weight: 600;
         }
 
         .nav-links {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .nav-link {
             text-decoration: none;
-            color: #667eea;
+            color: #1e3a8a;
             font-weight: 600;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 9px 22px;
+            border-radius: 6px;
             transition: all 0.3s ease;
-            background: #f0f0f0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            font-size: 0.95em;
         }
 
         .nav-link:hover {
-            background: #667eea;
+            background: #1e3a8a;
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
+            border-color: #1e3a8a;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 60px 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 60px 50px;
             animation: fadeIn 0.8s ease-in;
         }
 
@@ -81,85 +85,92 @@
         }
 
         h1 {
-            font-size: 3em;
-            color: #333;
-            margin-bottom: 20px;
+            font-size: 2.6em;
+            color: #1e293b;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 1.2em;
-            color: #666;
+            font-size: 1.15em;
+            color: #64748b;
             margin-bottom: 50px;
         }
 
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
 
         .team-member {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
-            padding: 40px 30px;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 35px 28px;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
         }
 
         .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: #cbd5e1;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: 2.8em;
             color: white;
             font-weight: bold;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
         }
 
         .team-member h3 {
-            font-size: 1.5em;
-            color: #333;
+            font-size: 1.4em;
+            color: #1e293b;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .team-member .role {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 1.1em;
+            color: #475569;
+            font-weight: 500;
+            font-size: 1em;
+            line-height: 1.5;
         }
 
         .project-info {
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
             padding: 30px;
             margin-top: 50px;
-            border-left: 5px solid #667eea;
+            border-left: 4px solid #1e3a8a;
+            border: 1px solid #e2e8f0;
         }
 
         .project-info h2 {
-            color: #667eea;
+            color: #1e3a8a;
             margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .project-info p {
-            color: #555;
-            line-height: 1.8;
-            font-size: 1.1em;
+            color: #475569;
+            line-height: 1.7;
+            font-size: 1.05em;
         }
 
         @media (max-width: 768px) {
