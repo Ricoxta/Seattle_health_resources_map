@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seattle Map - Introduction</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <style>
-        /* * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        } */
-
+    <style>       
+        /* 
+        Styling for the body of the intro page, sets font, background color and gradient, 
+        and centers the content both vertically and horizontally. 
+        */
         body {
             font-family: Georgia, 'Times New Roman', serif;
             background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
@@ -22,6 +20,10 @@
             padding: 20px;
         }
 
+        /* 
+        Styling for the main container that holds the content of the intro page including it's
+        position, maximum width, background color, border radius, shadow, padding, and text alignment.
+        */
         .container {
             position: relative;
             max-width: 900px;
@@ -33,6 +35,9 @@
             animation: fadeIn 0.8s ease-in;
         }
 
+        /* 
+        This keyframes animation creates a fade-in effect for the container.
+        */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -44,6 +49,9 @@
             }
         }
 
+        /* 
+        Styling for the main headings (h1 and h2) including font size, color, margin, weight, and letter spacing.
+        */
         h1 {
             font-size: 2.8em;
             color: #1e293b;
@@ -59,6 +67,9 @@
             font-weight: 400;
         }
 
+        /* 
+        This class styles the description section including font size, color, line height, margin, and text alignment.
+        */
         .description {
             font-size: 1.05em;
             color: #334155;
@@ -67,16 +78,26 @@
             text-align: left;
         }
 
+        /* 
+        This styles unordered lists within the description section, setting list style position and margin.
+        */
         .description ul {
             list-style-position: inside;
             margin: 20px 0;
         }
 
+        /* 
+        Here we style individual list items within the description section, adding margin and padding for better readability.
+        */
         .description li {
             margin: 10px 0;
             padding-left: 20px;
         }
 
+        /* 
+        The .btn class styles the call-to-action button including its display, padding, background color, and text color. 
+        It also includes hover and active states for interactivity. 
+        */
         .btn-container {
             margin-top: 40px;
         }
@@ -106,6 +127,9 @@
             transform: translateY(0);
         }
 
+        /* 
+        The .features class styles the features section using CSS Grid to create a responsive layout.
+        */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -113,6 +137,10 @@
             margin: 35px 0;
         }
 
+        /* 
+        The .feature class styles individual feature cards including padding, background color, 
+        border radius, text alignment, border, and transition effects. 
+        */
         .feature {
             padding: 25px 20px;
             background: #f8fafc;
@@ -122,16 +150,25 @@
             transition: all 0.3s ease;
         }
 
+        /* 
+        Hover effect for individual feature cards to enhance interactivity.
+        */
         .feature:hover {
             border-color: #cbd5e1;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
+        /* 
+        Icon styling within each feature card including font size and margin.
+        */
         .feature-icon {
             font-size: 2em;
             margin-bottom: 10px;
         }
 
+        /* 
+        Here we style the headings and paragraphs within each feature card for better readability.
+        */
         .feature h3 {
             color: #1e3a8a;
             margin-bottom: 8px;
@@ -145,6 +182,9 @@
             line-height: 1.5;
         }
 
+        /* 
+        This section styles the navigation bar at the top of the page including its position, background color, padding, shadow, and layout.
+        */
         .navbar {
             position: absolute;
             top: 0;
@@ -170,6 +210,9 @@
             gap: 10px;
         }
         
+        /* 
+        Here we style the navigation links including text decoration, color, padding, border radius, and hover effects.
+        */
         .nav-link {
             text-decoration: none;
             color: #667eea;
