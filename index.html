@@ -97,7 +97,7 @@
             padding: 15px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            max-width: 300px;
+            max-width: 320px;
             font-family: Arial, sans-serif;
         }
         .legend h4 {
@@ -110,6 +110,17 @@
             align-items: center;
             margin-bottom: 5px;
             font-size: 12px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        .legend-item:hover {
+            background-color: #f0f0f0;
+        }
+        .legend-item input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
         }
         .legend-color {
             width: 20px;
@@ -209,9 +220,6 @@
     </div>
     <div> 
         <div class="controls">
-            <label><input type="checkbox" id="homelessResources" checked> Homeless Resources</label><br>
-            <label><input type="checkbox" id="emergencyFood" checked> Emergency Food Locations</label><br>
-            <label><input type="checkbox" id="publicRestrooms" checked> Public Restrooms</label><br>
             <label><input type="checkbox" id="censusTract" checked> Census Tracts</label>
         </div>
         <div class="buffer-controls">
@@ -227,46 +235,56 @@
         <div class="legend">
             <h4>Map Legend</h4>
             <h5 style="margin: 10px 0 5px 0; font-size: 12px; font-weight: bold;">Seattle Health Resources Categories</h5>
-            <div class="legend-item">
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-shelter" checked>
                 <div class="legend-color" style="background-color: #FF1744;"></div>
                 <span>Homeless Shelter and Housing Programs</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-encampment" checked>
                 <div class="legend-color" style="background-color: #2196F3;"></div>
                 <span>Encampment and Outreach Area</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-community" checked>
                 <div class="legend-color" style="background-color: #4CAF50;"></div>
                 <span>Community Based Organizations</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-health" checked>
                 <div class="legend-color" style="background-color: #9C27B0;"></div>
                 <span>King County Public Health Center</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-wic" checked>
                 <div class="legend-color" style="background-color: #FF9800;"></div>
                 <span>Women, Infants, and Children (WIC) Site</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-courts" checked>
                 <div class="legend-color" style="background-color: #00BCD4;"></div>
                 <span>Courts and Criminal Justice Facilities</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-clinics" checked>
                 <div class="legend-color" style="background-color: #FFEB3B;"></div>
                 <span>Clinics and Health Care Settings</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-food" checked>
                 <div class="legend-color" style="background-color: #00FF00;"></div>
                 <span>Emergency Food Locations</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-restrooms" checked>
                 <div class="legend-color" style="background-color: #8B4513;"></div>
                 <span>Public Restrooms</span>
-            </div>
-            <div class="legend-item">
+            </label>
+            <label class="legend-item">
+                <input type="checkbox" id="toggle-other" checked>
                 <div class="legend-color" style="background-color: #607D8B;"></div>
                 <span>Other</span>
-            </div>
+            </label>
         </div>
     </div>
    
