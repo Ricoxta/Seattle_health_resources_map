@@ -249,8 +249,9 @@
             <h4>Buffer Analysis</h4>
             <p style="font-size: 12px; margin: 0 0 10px 0;">Click on the map to create a buffer</p>
             <label>
-                Radius (meters):
-                <input type="number" id="bufferRadius" value="500" min="100" max="5000" step="100">
+                Radius (miles):
+                <!-- values converted from meters to miles: 500m ≈ 0.31mi, min 100m ≈ 0.06mi, max 5000m ≈ 3.11mi -->
+                <input type="number" id="bufferRadius" value="0.31" min="0.06" max="3.11" step="0.01">
             </label>
             <button id="clearBuffer" class="clear" style="display: none;">Clear Buffer</button>
         </div>
@@ -675,8 +676,8 @@
             function createBufferAnalysis(lngLat) {
                 const radius = parseFloat(document.getElementById('bufferRadius').value);
                 const point = turf.point([lngLat.lng, lngLat.lat]);
-                const buffer = turf.buffer(point, radius / 1000, { units: 'kilometers' });
-                currentBuffer = buffer;
+                // radius is now provided in miles from the UI
+                const buffer = turf.buffer(point, radius, { units: 'miles' });                currentBuffer = buffer;
 
                 // Update buffer layer
                 map.getSource('buffer').setData(buffer);
@@ -726,7 +727,9 @@
                 const resultsDiv = document.getElementById('bufferResults');
                 resultsDiv.style.display = 'block';
 
-                let html = `<h4>Resources within ${radius}m</h4>`;
+                // Format radius for display (show up to 2 decimal places when needed)
+                const displayRadius = Number.isInteger(radius) ? radius : parseFloat(radius.toFixed(2));
+                let html = `<h4>Resources within ${displayRadius} miles</h4>`;
                 
                 const totalResources = homelessResources.length + foodResources.length + restroomResources.length;
                 html += `<p style="font-size: 12px; margin-bottom: 10px;"><strong>Total: ${totalResources} resources</strong></p>`;
