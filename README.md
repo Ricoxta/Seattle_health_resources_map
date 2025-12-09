@@ -28,7 +28,13 @@ https://ricoxta.github.io/Seattle_health_resources_map/
 
 This site is hosted through GitHub Pages and does not require any additional installation in order to be viewed.
 Screenshot:
-![Web App Screenshot](assets/mapscreenshot.png)
+
+#### **Full view of the map**
+![Web App Screenshot](assets/mapInFullView.png)
+#### **Buffer zone showing resources in the area**
+![Zoomed In Shot of Seattle Map](assets/mapWithAllCategories.png)
+#### **Same buffer zone with filtered categories**
+![Filtered and Zoomed in Shot of Seattle](assets/mapWithFilteredCategories.png)
 
 
 ### Main Functions
