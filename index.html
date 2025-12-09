@@ -139,6 +139,16 @@
             margin-right: 8px;
             flex-shrink: 0;
         }
+        .legend-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
 
         /* 
         The buffer control panel styling including position, background, padding, shadow, and max width.
@@ -259,49 +269,51 @@
         <div class="legend">
             <h4>Map Legend</h4>
             <h5 style="margin: 10px 0 5px 0; font-size: 12px; font-weight: bold;">Seattle Health Resources Categories</h5>
+            <!-- Using a 7-color, color-blind friendly palette for the main categories.
+                 Emergency Food and Public Restrooms use icons in the legend for clarity. -->
             <label class="legend-item">
                 <input type="checkbox" id="toggle-shelter" checked>
-                <div class="legend-color" style="background-color: #FF1744;"></div>
+                <div class="legend-color" style="background-color: #D55E00;"></div>
                 <span>Homeless Shelter and Housing Programs</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-encampment" checked>
-                <div class="legend-color" style="background-color: #2196F3;"></div>
+                <div class="legend-color" style="background-color: #0072B2;"></div>
                 <span>Encampment and Outreach Area</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-community" checked>
-                <div class="legend-color" style="background-color: #4CAF50;"></div>
+                <div class="legend-color" style="background-color: #009E73;"></div>
                 <span>Community Based Organizations</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-health" checked>
-                <div class="legend-color" style="background-color: #9C27B0;"></div>
+                <div class="legend-color" style="background-color: #CC79A7;"></div>
                 <span>King County Public Health Center</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-wic" checked>
-                <div class="legend-color" style="background-color: #FF9800;"></div>
+                <div class="legend-color" style="background-color: #F0E442;"></div>
                 <span>Women, Infants, and Children (WIC) Site</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-courts" checked>
-                <div class="legend-color" style="background-color: #00BCD4;"></div>
+                <div class="legend-color" style="background-color: #E69F00;"></div>
                 <span>Courts and Criminal Justice Facilities</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-clinics" checked>
-                <div class="legend-color" style="background-color: #FFEB3B;"></div>
+                <div class="legend-color" style="background-color: #56B4E9;"></div>
                 <span>Clinics and Health Care Settings</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-food" checked>
-                <div class="legend-color" style="background-color: #00FF00;"></div>
+                <div class="legend-icon">🍽️</div>
                 <span>Emergency Food Locations</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-restrooms" checked>
-                <div class="legend-color" style="background-color: #8B4513;"></div>
+                <div class="legend-icon">🚻</div>
                 <span>Public Restrooms</span>
             </label>
         </div>
@@ -393,15 +405,16 @@
                     'circle-color': [
                         'match',
                         ['get', 'category'],
-                        'Homeless Shelter and Housing Programs', '#FF1744',
-                        'Encampment and Outreach Area', '#2196F3',
-                        'Community Based Organizations', '#4CAF50',
-                        'King County Public Health Center', '#9C27B0',
-                        'King County Public Health Center (mobile)', '#9C27B0',
-                        'Women, Infants, and Children (WIC) Site', '#FF9800',
-                        'Courts and Criminal Justice Facilities', '#00BCD4',
-                        'Clinics and Health Care Settings', '#FFEB3B',
-                        '#607D8B' // default color 
+                        // 7 distinct, color-blind friendly colors (Okabe-Ito / Color Brewer inspired)
+                        'Homeless Shelter and Housing Programs', '#D55E00',
+                        'Encampment and Outreach Area', '#0072B2',
+                        'Community Based Organizations', '#009E73',
+                        'King County Public Health Center', '#CC79A7',
+                        'King County Public Health Center (mobile)', '#CC79A7',
+                        'Women, Infants, and Children (WIC) Site', '#F0E442',
+                        'Courts and Criminal Justice Facilities', '#E69F00',
+                        'Clinics and Health Care Settings', '#56B4E9',
+                        '#666666' // default neutral color
                     ],
                     'circle-radius': 6,
                     'circle-stroke-width': 1,
@@ -557,14 +570,14 @@
                 
                 // Color mapping for categories
                 const categoryColors = {
-                    'Homeless Shelter and Housing Programs': '#FF1744',
-                    'Encampment and Outreach Area': '#2196F3',
-                    'Community Based Organizations': '#4CAF50',
-                    'King County Public Health Center': '#9C27B0',
-                    'King County Public Health Center (mobile)': '#9C27B0',
-                    'Women, Infants, and Children (WIC) Site': '#FF9800',
-                    'Courts and Criminal Justice Facilities': '#00BCD4',
-                    'Clinics and Health Care Settings': '#FFEB3B'
+                    'Homeless Shelter and Housing Programs': '#D55E00',
+                    'Encampment and Outreach Area': '#0072B2',
+                    'Community Based Organizations': '#009E73',
+                    'King County Public Health Center': '#CC79A7',
+                    'King County Public Health Center (mobile)': '#CC79A7',
+                    'Women, Infants, and Children (WIC) Site': '#F0E442',
+                    'Courts and Criminal Justice Facilities': '#E69F00',
+                    'Clinics and Health Care Settings': '#56B4E9'
                 };
                 
                 const categoryColor = categoryColors[properties.category] || '#607D8B';
@@ -635,16 +648,16 @@
             let bufferMarker = null;
             let currentBuffer = null;
 
-            // Color mapping for categories
+            // Color mapping for categories (used when building result items)
             const categoryColors = {
-                'Homeless Shelter and Housing Programs': '#FF1744',
-                'Encampment and Outreach Area': '#2196F3',
-                'Community Based Organizations': '#4CAF50',
-                'King County Public Health Center': '#9C27B0',
-                'King County Public Health Center (mobile)': '#9C27B0',
-                'Women, Infants, and Children (WIC) Site': '#FF9800',
-                'Courts and Criminal Justice Facilities': '#00BCD4',
-                'Clinics and Health Care Settings': '#FFEB3B'
+                'Homeless Shelter and Housing Programs': '#D55E00',
+                'Encampment and Outreach Area': '#0072B2',
+                'Community Based Organizations': '#009E73',
+                'King County Public Health Center': '#CC79A7',
+                'King County Public Health Center (mobile)': '#CC79A7',
+                'Women, Infants, and Children (WIC) Site': '#F0E442',
+                'Courts and Criminal Justice Facilities': '#E69F00',
+                'Clinics and Health Care Settings': '#56B4E9'
             };
 
             // Add buffer source and layers (initially empty)
