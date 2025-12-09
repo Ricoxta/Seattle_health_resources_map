@@ -240,7 +240,7 @@
         </div>
     </div>
     <div id="map"></div>
-    </div>
+
     <div> 
         <div class="controls">
             <label><input type="checkbox" id="censusTract" checked> Census Tracts</label>
@@ -262,37 +262,27 @@
             <label class="legend-item">
                 <input type="checkbox" id="toggle-shelter" checked>
                 <div class="legend-color" style="background-color: #FF1744;"></div>
-                <span>Homeless Shelter and Housing Programs</span>
+                <span>Shelter and Housing</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-encampment" checked>
-                <div class="legend-color" style="background-color: #2196F3;"></div>
-                <span>Encampment and Outreach Area</span>
+                <div class="legend-color" style="background-color: #e8a71c;"></div>
+                <span>Encampment and Outreach</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-community" checked>
                 <div class="legend-color" style="background-color: #4CAF50;"></div>
-                <span>Community Based Organizations</span>
+                <span>Community Organizations</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-health" checked>
                 <div class="legend-color" style="background-color: #9C27B0;"></div>
-                <span>King County Public Health Center</span>
-            </label>
-            <label class="legend-item">
-                <input type="checkbox" id="toggle-wic" checked>
-                <div class="legend-color" style="background-color: #FF9800;"></div>
-                <span>Women, Infants, and Children (WIC) Site</span>
+                <span>Health Services</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-courts" checked>
                 <div class="legend-color" style="background-color: #00BCD4;"></div>
                 <span>Courts and Criminal Justice Facilities</span>
-            </label>
-            <label class="legend-item">
-                <input type="checkbox" id="toggle-clinics" checked>
-                <div class="legend-color" style="background-color: #FFEB3B;"></div>
-                <span>Clinics and Health Care Settings</span>
             </label>
             <label class="legend-item">
                 <input type="checkbox" id="toggle-food" checked>
@@ -334,6 +324,7 @@
             };
         }
 
+
         map.on('load', async () => {
             // Load all data first
             const [censusTractData, homelessData, emergencyFoodData, seattleLimitsData, publicRestroomsData] = await Promise.all([
@@ -349,6 +340,40 @@
             const filteredEmergencyFoodData = filterPointsWithinBoundary(emergencyFoodData, censusTractData);
             const filteredPublicRestroomsData = filterPointsWithinBoundary(publicRestroomsData, censusTractData);
             const firstSymbolLayer = map.getStyle().layers.find(layer => layer.type === 'symbol' && layer.layout && layer.layout['text-field']).id;
+
+
+            const unifiedCategoryGroups = {
+
+                // Shelter & Housing
+                "Homeless Shelter and Housing Programs": "Shelter & Housing",
+
+                // Encampments & Outreach
+                "Encampment and Outreach Area": "Encampments & Outreach",
+
+                // Health Services
+                "King County Public Health Center": "Health Services",
+                "King County Public Health Center (mobile)": "Health Services",
+                "Clinics and Health Care Settings": "Health Services",
+                "Women, Infants, and Children (WIC) Site": "Health Services",
+                // Community Services
+                "Community Based Organizations": "Community Organizations",
+
+                // Courts & Justice
+                "Courts and Criminal Justice Facilities": "Courts & Justice Facilities"
+            };
+
+                function assignUnifiedGroup(data) {
+                    data.features = data.features.map(f => {
+                     const cat = f.properties.category;
+                     f.properties.unifiedGroup =
+                        unifiedCategoryGroups[cat] || "Other";
+                        return f;
+                    });
+            
+                    return data;
+            }
+
+            const groupedHomelessData = assignUnifiedGroup(filteredHomelessData);
 
             // Add census tract layer
             map.addSource('censusTract', {
@@ -376,10 +401,43 @@
             });
 
             // Add homeless resources layer (filtered)
+            // map.addSource('homelessResources', {
+            //     type: 'geojson',
+            //     data: filteredHomelessData
+            // });
+            // map.addLayer(
+            //     {
+            //     id: 'homelessResources',
+            //     type: 'circle',
+            //     source: 'homelessResources',
+            //     paint: {
+            //         'circle-color': [
+            //             'match',
+            //             ['get', 'category'],
+            //             'Homeless Shelter and Housing Programs', '#FF1744',
+            //             'Encampment and Outreach Area', '#2196F3',
+            //             'Community Based Organizations', '#4CAF50',
+            //             'King County Public Health Center', '#9C27B0',
+            //             'King County Public Health Center (mobile)', '#9C27B0',
+            //             'Women, Infants, and Children (WIC) Site', '#FF9800',
+            //             'Courts and Criminal Justice Facilities', '#00BCD4',
+            //             'Clinics and Health Care Settings', '#FFEB3B',
+            //             '#607D8B' // default color 
+            //         ],
+            //         'circle-radius': 6,
+            //         'circle-stroke-width': 1,
+            //         'circle-stroke-color': '#ffffff'
+            //     }
+            
+            // }, firstSymbolLayer);
+
+
+            //adding grouped homeless resources layer
             map.addSource('homelessResources', {
                 type: 'geojson',
-                data: filteredHomelessData
+                data: groupedHomelessData
             });
+            
             map.addLayer(
                 {
                 id: 'homelessResources',
@@ -388,22 +446,19 @@
                 paint: {
                     'circle-color': [
                         'match',
-                        ['get', 'category'],
-                        'Homeless Shelter and Housing Programs', '#FF1744',
-                        'Encampment and Outreach Area', '#2196F3',
-                        'Community Based Organizations', '#4CAF50',
-                        'King County Public Health Center', '#9C27B0',
-                        'King County Public Health Center (mobile)', '#9C27B0',
-                        'Women, Infants, and Children (WIC) Site', '#FF9800',
-                        'Courts and Criminal Justice Facilities', '#00BCD4',
-                        'Clinics and Health Care Settings', '#FFEB3B',
+                        ['get', 'unifiedGroup'],
+                        'Shelter & Housing', '#FF1744',
+                        'Encampments & Outreach', '#e8a71c',
+                        'Community Organizations', '#4CAF50',
+                        'Health Services', '#9C27B0',
+                        'Courts & Justice Facilities', '#00BCD4',
                         '#607D8B' // default color 
                     ],
                     'circle-radius': 6,
                     'circle-stroke-width': 1,
                     'circle-stroke-color': '#ffffff'
                 }
-            
+                
             }, firstSymbolLayer);
 
             // Add emergency food locations layer (filtered)
@@ -439,16 +494,25 @@
             }, firstSymbolLayer);
 
             // Store enabled categories
+            // const enabledCategories = {
+            //     'Homeless Shelter and Housing Programs': true,
+            //     'Encampment and Outreach Area': true,
+            //     'Community Based Organizations': true,
+            //     'King County Public Health Center': true,
+            //     'King County Public Health Center (mobile)': true,
+            //     'Women, Infants, and Children (WIC) Site': true,
+            //     'Courts and Criminal Justice Facilities': true,
+            //     'Clinics and Health Care Settings': true
+            // };
+
             const enabledCategories = {
-                'Homeless Shelter and Housing Programs': true,
-                'Encampment and Outreach Area': true,
-                'Community Based Organizations': true,
-                'King County Public Health Center': true,
-                'King County Public Health Center (mobile)': true,
-                'Women, Infants, and Children (WIC) Site': true,
-                'Courts and Criminal Justice Facilities': true,
-                'Clinics and Health Care Settings': true
+                'Shelter & Housing': true,
+                'Encampments & Outreach': true,
+                'Community Organizations': true,
+                'Health Services': true,
+                'Courts & Justice Facilities': true
             };
+
 
             const enabledLayers = {
                 'food': true,
@@ -459,9 +523,9 @@
             function updateHomelessResourcesLayer() {
                 const filter = ['any'];
                 
-                for (const [category, enabled] of Object.entries(enabledCategories)) {
+                for (const [groupName, enabled] of Object.entries(enabledCategories)) {
                     if (enabled) {
-                        filter.push(['==', ['get', 'category'], category]);
+                        filter.push(['==', ['get', 'unifiedGroup'], groupName]);
                     }
                 }
                 
@@ -476,38 +540,27 @@
 
             // Legend toggle functionality
             document.getElementById('toggle-shelter').addEventListener('change', (e) => {
-                enabledCategories['Homeless Shelter and Housing Programs'] = e.target.checked;
+                enabledCategories['Shelter & Housing'] = e.target.checked;
                 updateHomelessResourcesLayer();
             });
 
             document.getElementById('toggle-encampment').addEventListener('change', (e) => {
-                enabledCategories['Encampment and Outreach Area'] = e.target.checked;
+                enabledCategories['Encampments & Outreach'] = e.target.checked;
                 updateHomelessResourcesLayer();
             });
 
             document.getElementById('toggle-community').addEventListener('change', (e) => {
-                enabledCategories['Community Based Organizations'] = e.target.checked;
+                enabledCategories['Community Organizations'] = e.target.checked;
                 updateHomelessResourcesLayer();
             });
 
             document.getElementById('toggle-health').addEventListener('change', (e) => {
-                enabledCategories['King County Public Health Center'] = e.target.checked;
-                enabledCategories['King County Public Health Center (mobile)'] = e.target.checked;
-                updateHomelessResourcesLayer();
-            });
-
-            document.getElementById('toggle-wic').addEventListener('change', (e) => {
-                enabledCategories['Women, Infants, and Children (WIC) Site'] = e.target.checked;
+                enabledCategories['Health Services'] = e.target.checked;
                 updateHomelessResourcesLayer();
             });
 
             document.getElementById('toggle-courts').addEventListener('change', (e) => {
-                enabledCategories['Courts and Criminal Justice Facilities'] = e.target.checked;
-                updateHomelessResourcesLayer();
-            });
-
-            document.getElementById('toggle-clinics').addEventListener('change', (e) => {
-                enabledCategories['Clinics and Health Care Settings'] = e.target.checked;
+                enabledCategories['Courts & Justice Facilities'] = e.target.checked;
                 updateHomelessResourcesLayer();
             });
 
@@ -550,20 +603,17 @@
             // Add click event for homeless resources
             map.on('click', 'homelessResources', (e) => {
                 const properties = e.features[0].properties;
+                const groupedCategory = properties.unifiedGroup;
                 
-                // Color mapping for categories
                 const categoryColors = {
-                    'Homeless Shelter and Housing Programs': '#FF1744',
-                    'Encampment and Outreach Area': '#2196F3',
-                    'Community Based Organizations': '#4CAF50',
-                    'King County Public Health Center': '#9C27B0',
-                    'King County Public Health Center (mobile)': '#9C27B0',
-                    'Women, Infants, and Children (WIC) Site': '#FF9800',
-                    'Courts and Criminal Justice Facilities': '#00BCD4',
-                    'Clinics and Health Care Settings': '#FFEB3B'
+                    'Shelter & Housing': '#FF1744',
+                    'Encampments & Outreach': '#e8a71c',
+                    'Community Organizations': '#4CAF50',
+                    'Health Services': '#9C27B0',
+                    'Courts & Justice Facilities': '#00BCD4'
                 };
-                
-                const categoryColor = categoryColors[properties.category] || '#607D8B';
+
+                const categoryColor = categoryColors[groupedCategory] || '#607D8B';
                 
                 // Build popup content
                 let popupContent = `<div style="font-family: Arial, sans-serif;">`;
@@ -632,16 +682,13 @@
             let currentBuffer = null;
 
             // Color mapping for categories
-            const categoryColors = {
-                'Homeless Shelter and Housing Programs': '#FF1744',
-                'Encampment and Outreach Area': '#2196F3',
-                'Community Based Organizations': '#4CAF50',
-                'King County Public Health Center': '#9C27B0',
-                'King County Public Health Center (mobile)': '#9C27B0',
-                'Women, Infants, and Children (WIC) Site': '#FF9800',
-                'Courts and Criminal Justice Facilities': '#00BCD4',
-                'Clinics and Health Care Settings': '#FFEB3B'
-            };
+                const categoryColors = {
+                    'Shelter & Housing': '#FF1744',
+                    'Encampments & Outreach': '#e8a71c',
+                    'Community Organizations': '#4CAF50',
+                    'Health Services': '#9C27B0',
+                    'Courts & Justice Facilities': '#00BCD4'
+                };
 
             // Add buffer source and layers (initially empty)
             map.addSource('buffer', {
@@ -697,24 +744,30 @@
                 const foodWithinBuffer = [];
                 const restroomsWithinBuffer = [];
 
-                filteredHomelessData.features.forEach(feature => {
+                groupedHomelessData.features.forEach(feature => {
+                    const group = feature.properties.unifiedGroup;
+                    if(!enabledCategories[group]) return; 
+
                     if (turf.booleanPointInPolygon(feature, buffer)) {
                         homelessWithinBuffer.push(feature);
                     }
                 });
 
-                filteredEmergencyFoodData.features.forEach(feature => {
-                    if (turf.booleanPointInPolygon(feature, buffer)) {
-                        foodWithinBuffer.push(feature);
-                    }
-                });
+                if(document.getElementById('toggle-food').checked){
+                    filteredEmergencyFoodData.features.forEach(feature => {
+                        if (turf.booleanPointInPolygon(feature, buffer)) {
+                            foodWithinBuffer.push(feature);
+                        }
+                    });
+                }
 
-                filteredPublicRestroomsData.features.forEach(feature => {
-                    if (turf.booleanPointInPolygon(feature, buffer)) {
-                        restroomsWithinBuffer.push(feature);
-                    }
-                });
-
+                if(document.getElementById('toggle-restrooms').checked){
+                    filteredPublicRestroomsData.features.forEach(feature => {
+                        if (turf.booleanPointInPolygon(feature, buffer)) {
+                            restroomsWithinBuffer.push(feature);
+                        }
+                    });
+                }   
                 // Display results
                 displayBufferResults(homelessWithinBuffer, foodWithinBuffer, restroomsWithinBuffer, radius);
 
@@ -738,7 +791,8 @@
                     html += `<h5 style="margin: 10px 0 5px 0; font-size: 13px;">Homeless Resources (${homelessResources.length})</h5>`;
                     homelessResources.forEach(feature => {
                         const props = feature.properties;
-                        const color = categoryColors[props.category] || '#607D8B';
+                        const groupedCategory = props.unifiedGroup;
+                        const color = categoryColors[groupedCategory] || '#607D8B';
                         html += `<div class="result-item" style="border-left-color: ${color};">`;
                         html += `<strong>${props.site || 'Unknown'}</strong>`;
                         if (props.address) html += `📍 ${props.address}<br>`;
