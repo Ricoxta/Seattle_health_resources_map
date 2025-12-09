@@ -64,8 +64,8 @@ Though the dataset included may be limited for demonstration, the overall struct
 ### Applied Libraries and Web Services
 The project incorporates several web technologies and services, including:
 #### Mapping Libraries
-- Mapbox GL JS, supporting vector-tile visualization.
-- Leaflet, a lightweight JavaScript library for interactive web mapping.
+- Mapbox GL JS, supporting vector-tile visualization to implement our data as well as adding popups. 
+- Turf.js, for the spatial analysis of the number of resources within a certain buffer zone.
 
 
 #### Web Services
@@ -81,7 +81,7 @@ This project was developed from the framework of the repository titled *Finalpro
 
 
 ### AI Use Disclosure
-ChatGPT was used to assist in writing and refining this README file. The use of AI was limited to generating descriptive text, improving clarity, and enhancing formatting. Copilot was used to assist with coding our *index.html,* *intro.html,* and *about.html* files. It allowed us to implement some complex features and clean up our code.
+ChatGPT was used to assist in writing and refining this README file. The use of AI was limited to generating descriptive text, improving clarity, and enhancing formatting. Copilot was used to assist with coding and debugging our *index.html,* *intro.html,* and *about.html* files. It allowed us to implement some complex features and clean up our code.
 
 
 ### Additional Notes
