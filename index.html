@@ -7,7 +7,6 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-    <link href="https://api.mapbox.com/mapbox-assembly/v1.13.1/assembly.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <style>
          /* styles the body of the content to be formatted correctly in respect to other elements on the page*/
@@ -228,8 +227,6 @@
         }
     </style>
     
-    <script async defer src="https://api.mapbox.com/mapbox-assembly/v1.13.1/assembly.js"></script>
-
 </head>
 <body>
     <div class="navbar">
@@ -327,11 +324,10 @@
 
         map.on('load', async () => {
             // Load all data first
-            const [censusTractData, homelessData, emergencyFoodData, seattleLimitsData, publicRestroomsData] = await Promise.all([
+            const [censusTractData, homelessData, emergencyFoodData, publicRestroomsData] = await Promise.all([
                 fetch('./assets/2020_Census_Tracts_Seattle.geojson').then(r => r.json()),
                 fetch('./assets/cleaned_homeless_health.geojson').then(r => r.json()),
                 fetch('./assets/EmergencyFoodAndMealSeattleOnly.geojson').then(r => r.json()),
-                fetch('./assets/seattle_city_limits.geojson').then(r => r.json()),
                 fetch('./assets/public_restrooms_seattle.geojson').then(r => r.json())
             ]);
 
@@ -400,38 +396,6 @@
                 }
             });
 
-            // Add homeless resources layer (filtered)
-            // map.addSource('homelessResources', {
-            //     type: 'geojson',
-            //     data: filteredHomelessData
-            // });
-            // map.addLayer(
-            //     {
-            //     id: 'homelessResources',
-            //     type: 'circle',
-            //     source: 'homelessResources',
-            //     paint: {
-            //         'circle-color': [
-            //             'match',
-            //             ['get', 'category'],
-            //             'Homeless Shelter and Housing Programs', '#FF1744',
-            //             'Encampment and Outreach Area', '#2196F3',
-            //             'Community Based Organizations', '#4CAF50',
-            //             'King County Public Health Center', '#9C27B0',
-            //             'King County Public Health Center (mobile)', '#9C27B0',
-            //             'Women, Infants, and Children (WIC) Site', '#FF9800',
-            //             'Courts and Criminal Justice Facilities', '#00BCD4',
-            //             'Clinics and Health Care Settings', '#FFEB3B',
-            //             '#607D8B' // default color 
-            //         ],
-            //         'circle-radius': 6,
-            //         'circle-stroke-width': 1,
-            //         'circle-stroke-color': '#ffffff'
-            //     }
-            
-            // }, firstSymbolLayer);
-
-
             //adding grouped homeless resources layer
             map.addSource('homelessResources', {
                 type: 'geojson',
@@ -493,18 +457,7 @@
                 }
             }, firstSymbolLayer);
 
-            // Store enabled categories
-            // const enabledCategories = {
-            //     'Homeless Shelter and Housing Programs': true,
-            //     'Encampment and Outreach Area': true,
-            //     'Community Based Organizations': true,
-            //     'King County Public Health Center': true,
-            //     'King County Public Health Center (mobile)': true,
-            //     'Women, Infants, and Children (WIC) Site': true,
-            //     'Courts and Criminal Justice Facilities': true,
-            //     'Clinics and Health Care Settings': true
-            // };
-
+            // Enabled categories for filtering + displaying different resource types
             const enabledCategories = {
                 'Shelter & Housing': true,
                 'Encampments & Outreach': true,
@@ -513,7 +466,7 @@
                 'Courts & Justice Facilities': true
             };
 
-
+            // additional dataset layer toggles
             const enabledLayers = {
                 'food': true,
                 'restrooms': true
@@ -744,6 +697,7 @@
                 const foodWithinBuffer = [];
                 const restroomsWithinBuffer = [];
 
+                // Checking if the homeless resource's unifiedGroup is enabled before checking if it's within the buffer
                 groupedHomelessData.features.forEach(feature => {
                     const group = feature.properties.unifiedGroup;
                     if(!enabledCategories[group]) return; 
@@ -753,6 +707,7 @@
                     }
                 });
 
+                // Check additional datasets based on enabled layers
                 if(document.getElementById('toggle-food').checked){
                     filteredEmergencyFoodData.features.forEach(feature => {
                         if (turf.booleanPointInPolygon(feature, buffer)) {
